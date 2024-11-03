@@ -8,6 +8,7 @@ configDotenv();
 
 // Create an instance of the Express app
 const app = express();
+const PORT = process.env.PORT || 5000; // Use port from .env or default to 5000
 
 // Middleware to parse JSON bodies
 app.use(express.json());
@@ -29,7 +30,18 @@ app.get("/users", async (req, res) => {
 	}
 });
 
-const PORT = process.env.PORT || 5000; // Use port from .env or default to 5000
+// Route: POST - Add a new user
+app.post("/users", async (req, res) => {
+	// Create a new user instance with request body details
+	const user = new User(req.body);
+	try {
+		const savedUser = await user.save(); // Save the user to the database
+		res.status(201).json(savedUser); // Return saved user as JSON response
+	} catch (error) {
+		// Return error message
+		res.status(400).json({ message: error.message });
+	}
+});
 
 // Start the server
 app.listen(PORT, () => {
