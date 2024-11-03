@@ -57,6 +57,17 @@ app.put("/users/:id", async (req, res) => {
 	}
 });
 
+// Route: DELETE - Remove a user by ID
+app.delete("/users/:id", async (req, res) => {
+	try {
+		await User.findByIdAndDelete(req.params.id); // Delete user by ID
+		res.json({ message: "User deleted" }); // Return success message
+	} catch (error) {
+		// Return error message
+		res.status(500).json({ message: error.message });
+	}
+});
+
 // Start the server
 app.listen(PORT, () => {
 	// Log server start message
