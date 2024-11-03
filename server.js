@@ -43,6 +43,20 @@ app.post("/users", async (req, res) => {
 	}
 });
 
+// Route: PUT - Edit a user by ID
+app.put("/users/:id", async (req, res) => {
+	try {
+		const updatedUser = await User.findByIdAndUpdate(
+			req.params.id,
+			req.body
+		); // Update user
+		res.json(updatedUser); // Return updated user as JSON response
+	} catch (error) {
+		// Return error message
+		res.status(400).json({ message: error.message });
+	}
+});
+
 // Start the server
 app.listen(PORT, () => {
 	// Log server start message
